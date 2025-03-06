@@ -4,7 +4,7 @@ Este es un proyecto basado en **Spring Boot** que permite el entrenamiento con p
 
 ## Instalación de dependencias
 
-Para ejecutar este proyecto, es necesario contar con **Maven** instalado. Sigue los pasos según tu sistema operativo.
+Para ejecutar este proyecto, es necesario contar con **Maven** instalado.
 
 ### Verificar si Maven está instalado
 
@@ -14,7 +14,7 @@ Ejecuta el siguiente comando para comprobar si Maven está disponible:
 mvn -version
 ```
 
-Si el comando muestra información sobre Maven, ya lo tienes instalado y puedes pasar al siguiente paso.
+Si el comando muestra información sobre Maven, ya lo tienes instalado
 
 ### Instalar Maven (si no lo tienes)
 

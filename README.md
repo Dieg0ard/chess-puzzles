@@ -16,7 +16,8 @@ mvn -version
 
 Si el comando muestra información sobre Maven, ya lo tienes instalado
 
-### Instalar Maven (si no lo tienes)
+### Instalar Maven 
+
 
 #### **Windows:**
 Descarga el instalador desde [Maven](https://maven.apache.org/download.cgi), extrae el contenido y configura la variable de entorno `MAVEN_HOME`.

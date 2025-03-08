@@ -38,6 +38,5 @@ Si solo deseas descargar las dependencias sin compilar el proyecto, usa:
 mvn dependency:resolve
 ```
 
-Con estos pasos, el entorno estará listo para ejecutar la aplicación.
 
 

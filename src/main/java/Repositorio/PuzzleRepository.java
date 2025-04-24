@@ -47,6 +47,7 @@ public class PuzzleRepository implements IPuzzleRepository {
                         current.append(c);
                     }
                 }
+                moves.push(current.toString());
                 int rating = resultado.getInt("rating");
                 int ratingDeviation = resultado.getInt("rating_deviation");
                 int popularity = resultado.getInt("popularity");
@@ -90,6 +91,7 @@ public class PuzzleRepository implements IPuzzleRepository {
                     current.append(c);
                 }
             }
+            moves.push(current.toString());
             int rating = resultado.getInt("rating");
             int ratingDeviation = resultado.getInt("rating_deviation");
             int popularity = resultado.getInt("popularity");

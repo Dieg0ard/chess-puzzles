@@ -14,12 +14,64 @@ import java.util.List;
 
 
 public class Usuario {
-
+    private int id;
     private String nombreUsuario;
     private String nombreReal;
     private String correo;
-    private String clave;
-    private String nivelAjedrez;
+      private String clave;
+          private int nivelAjedrez;
+      
+      public Usuario(String nombreUsuario){
+          this.nombreUsuario = nombreUsuario;
+          
+      }
+      
+      public Usuario(int id, String nombreUsuario){
+          this.id = id;
+          this.nombreUsuario = nombreUsuario;
+          
+      }
+      
+      public Usuario(int id){
+          this.id = id;
+          
+      }
+
+    public Usuario(String nombreUsuario, String nombreReal, String correo, String clave, int nivelAjedrez) {
+        this.nombreUsuario = nombreUsuario;
+        this.nombreReal = nombreReal;
+        this.correo = correo;
+        this.clave = clave;
+        this.nivelAjedrez = nivelAjedrez;
+    }
+      
+      
+          
+          
+          
+
+    public Usuario(int id, String nombreUsuario, String nombreReal, String correo, String clave, int nivelAjedrez) {
+        this.id = id;
+        this.nombreUsuario = nombreUsuario;
+        this.nombreReal = nombreReal;
+        this.correo = correo;
+        this.clave = clave;
+        this.nivelAjedrez = nivelAjedrez;
+    }
+  
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNivelAjedrez(int nivelAjedrez) {
+        this.nivelAjedrez = nivelAjedrez;
+    }
+
+    public int getId() {
+        return id;
+    }
+
 
     // Getters and setters
     public String getNombreUsuario() {
@@ -54,11 +106,14 @@ public class Usuario {
         this.clave = clave;
     }
 
-    public String getNivelAgéndez() {
+    @Override
+    public String toString() {
+        return "Usuario{" + "id=" + id + ", nombreUsuario=" + nombreUsuario + ", nombreReal=" + nombreReal + ", correo=" + correo + ", clave=" + clave + ", nivelAjedrez=" + nivelAjedrez + '}';
+    }
+
+    public int getNivelAjedrez() {
         return nivelAjedrez;
     }
 
-    public void setNivelAgéndez(String nivelAgéndez) {
-        this.nivelAjedrez = nivelAgéndez;
-    }
+    
 }

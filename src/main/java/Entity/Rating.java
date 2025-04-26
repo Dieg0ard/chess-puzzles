@@ -9,8 +9,27 @@ package Entity;
  * @author Usuario
  */
 public class Rating {
-
+   
+    private int id;
     private int valor;
+
+    public Rating(int id, int valor) {
+        this.id = id;
+        this.valor = valor;
+    }
+    
+    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
+    
 
     public int getValor() {
         return valor;

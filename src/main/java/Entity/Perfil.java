@@ -13,34 +13,82 @@ import java.util.Stack;
 
 public class Perfil {
 
-    private String nombreUsuario;
-    private String nivelAjedrez;
-    private Rating rating;
+    
+    private int id;
+    private String nombre_perfil;
+    private int nivelAjedrez;
+    private int rating;
     private Stack<Puzzle> puzzlesResueltos;
     private Stack<Partida> puzzlesIntentados;
+    private int idRating; //sirve cuando vamos a inserat por id del rating en la base de datos
+
+    
+    
+    public Perfil(int id, String nombre_perfil, int nivelAjedrez, int rating,int idRating) {
+       this.id = id;
+        this.nombre_perfil = nombre_perfil;
+        this.nivelAjedrez = nivelAjedrez;
+        this.rating = rating;
+        this.idRating = idRating;
+    }
+
+    public Perfil(int id, int idRating) {
+        this.id = id;
+        this.idRating = idRating;
+    }
+
+    public Perfil(int id) {
+        this.id = id;
+    }
+    
+    
+
+   
 
     // Getters and setters
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    
+    
+    
+
+    public int getIdRating() {
+        return idRating;
+    }
+    
+    public void setIdRating(int idRating) {
+        this.idRating = idRating;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public int getId() {
+        return id;
     }
 
-    public String getNivelAgéndez() {
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+
+    public void setNombre_perfil(String nombre_perfil) {
+        this.nombre_perfil = nombre_perfil;
+    }
+
+    public String getNombre_perfil() {
+        return nombre_perfil;
+    }
+   
+
+    public int getNivelAjedrez() {
         return nivelAjedrez;
     }
 
-    public void setNivelAgéndez(String nivelAjedrez) {
+    public void setNivelAgéndez(int nivelAjedrez) {
         this.nivelAjedrez = nivelAjedrez;
     }
 
-    public Rating getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Rating rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

@@ -102,8 +102,8 @@ import java.util.logging.Logger;
     }
 
     @Override
-    public Partida consultarPartida(Partida partida) {
-        Partida r = null;
+    public List<Partida> consultarPartida(Partida partida) {
+        List<Partida> partidas = new ArrayList<>();
         try {
             Connection con = BaseDeDatos.getConnection();
             String sql = "SELECT puzzle_id, perfil_id, puzzle_resuelto, fecha_intento, tiempo_intento FROM partida WHERE perfil_id=? ";
@@ -111,24 +111,25 @@ import java.util.logging.Logger;
             sentencia.setInt(1, partida.getPerfilId());
             ResultSet resultado = sentencia.executeQuery();
             
-            if (resultado.next()) {
+            while (resultado.next()) {
                 int puzzleId = resultado.getInt("puzzle_id");
                 int perfilId = resultado.getInt("perfil_id");
                 boolean puzzleResuelto = resultado.getBoolean("puzzle_resuelto");
                 Date fechaIntento = resultado.getDate("fecha_intento");
                 Time tiempo = resultado.getTime("tiempo_intento");
                 LocalTime tiempoIntento= tiempo.toLocalTime();
-                r = new Partida(puzzleId,perfilId,puzzleResuelto,fechaIntento,tiempoIntento);
+                Partida partida2 = new Partida(puzzleId,perfilId,puzzleResuelto,fechaIntento,tiempoIntento);
+                partidas.add(partida2);
             }
 
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(PartidaRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;        
+        return partidas;        
     }
     @Override
-    public Partida consultarResueltosPerfil(Partida partida) {
-        Partida r = null;
+    public List<Partida> consultarResueltosPerfil(Partida partida) {
+        List<Partida> partidas = new ArrayList<>();
         try {
             Connection con = BaseDeDatos.getConnection();
             String sql = "SELECT id_perfil, id_puzzle, fecha_intento, tiempo_intento FROM perfil_puzzles_resueltos WHERE id_perfil=? ";
@@ -136,24 +137,25 @@ import java.util.logging.Logger;
             sentencia.setInt(1, partida.getPerfilId());
             ResultSet resultado = sentencia.executeQuery();
             
-            if (resultado.next()) {
+            while (resultado.next()) {
                 int puzzleId = resultado.getInt("id_puzzle");
                 int perfilId = resultado.getInt("id_perfil");
                 boolean puzzleResuelto = true;
                 Date fechaIntento = resultado.getDate("fecha_intento");
                 Time tiempo = resultado.getTime("tiempo_intento");
                 LocalTime tiempoIntento= tiempo.toLocalTime();
-                r = new Partida(puzzleId,perfilId,puzzleResuelto,fechaIntento,tiempoIntento);
+                Partida partida2 = new Partida(puzzleId,perfilId,puzzleResuelto,fechaIntento,tiempoIntento);
+                partidas.add(partida2);
             }
 
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(PartidaRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;        
+        return partidas;        
     }
     @Override
-    public Partida consultarIntentadosPerfil(Partida partida) {
-        Partida r = null;
+    public List<Partida> consultarIntentadosPerfil(Partida partida) {
+        List<Partida> partidas = new ArrayList<>();
         try {
             Connection con = BaseDeDatos.getConnection();
             String sql = "SELECT id_perfil, id_puzzle, fecha_intento, tiempo_intento,resuelto FROM perfil_puzzles_intentados WHERE id_perfil=? ";
@@ -161,20 +163,21 @@ import java.util.logging.Logger;
             sentencia.setInt(1, partida.getPerfilId());
             ResultSet resultado = sentencia.executeQuery();
             
-            if (resultado.next()) {
+            while (resultado.next()) {
                 int puzzleId = resultado.getInt("id_puzzle");
                 int perfilId = resultado.getInt("id_perfil");
                 boolean puzzleResuelto = resultado.getBoolean("resuelto");
                 Date fechaIntento = resultado.getDate("fecha_intento");
                 Time tiempo = resultado.getTime("tiempo_intento");
                 LocalTime tiempoIntento= tiempo.toLocalTime();
-                r = new Partida(puzzleId,perfilId,puzzleResuelto,fechaIntento,tiempoIntento);
+                Partida partida2 = new Partida(puzzleId,perfilId,puzzleResuelto,fechaIntento,tiempoIntento);
+                partidas.add(partida2);
             }
 
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(PartidaRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;        
+        return partidas;        
     }
 
     @Override

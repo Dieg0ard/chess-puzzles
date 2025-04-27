@@ -25,13 +25,13 @@ public class PartidaServices {
         return partidaRepository.consultarIntentados();
     }
     
-    public Partida consultarPartida(Partida partida){
+    public List<Partida> consultarPartida(Partida partida){
         return partidaRepository.consultarPartida(partida);
     }
-    public Partida consultarResueltosPerfil(Partida partida){
+    public List<Partida> consultarResueltosPerfil(Partida partida){
         return partidaRepository.consultarResueltosPerfil(partida);
     }
-    public Partida consultarIntentadosPerfil(Partida partida){
+    public List<Partida> consultarIntentadosPerfil(Partida partida){
         return partidaRepository.consultarIntentadosPerfil(partida);
     }
     

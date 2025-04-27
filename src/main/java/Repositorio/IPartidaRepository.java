@@ -15,9 +15,9 @@ public interface IPartidaRepository {
     public List<Partida> consultar();
     public List<Partida> consultarResueltos();
     public List<Partida> consultarIntentados();
-    public Partida consultarPartida(Partida partida);
-    public Partida consultarResueltosPerfil(Partida partida);
-    public Partida consultarIntentadosPerfil(Partida partida);
+    public List<Partida> consultarPartida(Partida partida);
+    public List<Partida> consultarResueltosPerfil(Partida partida);
+    public List<Partida> consultarIntentadosPerfil(Partida partida);
     public int insertar(Partida partida);
     public int eliminar(Partida partida);
  }

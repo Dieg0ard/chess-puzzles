@@ -5,6 +5,7 @@
 package Entity;
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 /**
@@ -17,7 +18,19 @@ public class Partida {
     private int perfilId;
     private boolean puzzleResuelto;
     private Date fechaIntento;
-    private Time tiempointento;
+    private LocalTime tiempoIntento;
+
+    public Partida( int perfilId) {
+        this.perfilId = perfilId;
+    }
+
+    public Partida(int puzzleId, int perfilId, boolean puzzleResuelto, Date fechaIntento, LocalTime tiempointento) {
+        this.puzzleId = puzzleId;
+        this.perfilId = perfilId;
+        this.puzzleResuelto = puzzleResuelto;
+        this.fechaIntento = fechaIntento;
+        this.tiempoIntento = tiempointento;
+    }
 
     /**
      * @return the puzzleId
@@ -74,19 +87,24 @@ public class Partida {
     public void setFechaIntento(Date fechaIntento) {
         this.fechaIntento = fechaIntento;
     }
-
+    /**
+     * @return the tiempoIntento as a String
+     */
+    public String getTiempoIntentoString() {
+        return tiempoIntento != null ? tiempoIntento.toString() : null;
+    }
     /**
      * @return the tiempointento
      */
-    public Time getTiempointento() {
-        return tiempointento;
+    public LocalTime getTiempoIntento() {
+        return tiempoIntento;
     }
 
     /**
-     * @param tiempointento the tiempointento to set
+     * @param tiempoIntento
      */
-    public void setTiempointento(Time tiempointento) {
-        this.tiempointento = tiempointento;
+    public void setTiempoIntento(LocalTime tiempoIntento) {
+        this.tiempoIntento = tiempoIntento;
     }
     
    

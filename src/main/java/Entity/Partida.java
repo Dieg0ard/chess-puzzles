@@ -19,6 +19,20 @@ public class Partida {
     private Date fechaIntento;
     private Time tiempointento;
 
+    public Partida(int puzzleId, int perfilId, Date fechaIntento) {
+        this.puzzleId = puzzleId;
+        this.perfilId = perfilId;
+        this.fechaIntento = fechaIntento;
+    }
+    
+    
+    
+    
+
+   
+
+    
+    
     /**
      * @return the puzzleId
      */

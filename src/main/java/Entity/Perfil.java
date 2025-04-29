@@ -22,6 +22,16 @@ public class Perfil {
     private Stack<Partida> puzzlesIntentados;
     private int idRating; //sirve cuando vamos a inserat por id del rating en la base de datos
 
+    public Perfil(int id, String nombre_perfil, int nivelAjedrez, int rating, Stack<Puzzle> puzzlesResueltos, Stack<Partida> puzzlesIntentados, int idRating) {
+        this.id = id;
+        this.nombre_perfil = nombre_perfil;
+        this.nivelAjedrez = nivelAjedrez;
+        this.rating = rating;
+        this.puzzlesResueltos = puzzlesResueltos;
+        this.puzzlesIntentados = puzzlesIntentados;
+        this.idRating = idRating;
+    }
+
     
     
     public Perfil(int id, String nombre_perfil, int nivelAjedrez, int rating,int idRating) {

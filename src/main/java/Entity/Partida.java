@@ -24,6 +24,20 @@ public class Partida {
         this.perfilId = perfilId;
         this.fechaIntento = fechaIntento;
     }
+
+    public Partida(int puzzleId, Date fechaIntento) {
+        this.puzzleId = puzzleId;
+        this.fechaIntento = fechaIntento;
+    }
+
+    public Partida(int puzzleId, int perfilId, boolean puzzleResuelto, Date fechaIntento) {
+        this.puzzleId = puzzleId;
+        this.perfilId = perfilId;
+        this.puzzleResuelto = puzzleResuelto;
+        this.fechaIntento = fechaIntento;
+    }
+    
+    
     
     
     

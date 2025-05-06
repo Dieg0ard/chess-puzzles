@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,55 +31,24 @@ public class PerfilRepository {
         List<Perfil> perfiles = new ArrayList<>();
         try {
             Connection con = BaseDeDatos.getConnection();
-            String sql = "SELECT id_usuario, id_rating FROM  perfil ";
+            String sql = "SELECT p.id_usuario, u.nombre_usuario, u.nivel_ajedrez, r.valor, p.id_rating"
+                    + " FROM perfil p,usuario u, rating r "
+                    + "WHERE p.id_usuario = u.id AND p.id_rating = r.id ";
             PreparedStatement sentencia = con.prepareStatement(sql);
             ResultSet resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) {    //las propiedades con las que se crea un perfil son el id del usuario (nombre y nivel ajedrez) junto al rating, puzzles resueltos e intentados se agregan luego
-              
-                int id_usuario = resultado.getInt("id_usuario");       //obtener nombre y nivel desde el id de la llave foranea
-                String query = "SELECT nombre_usuario,nivel_ajedrez FROM  usuario WHERE id = ? ";
-                PreparedStatement sentencia_segunda = con.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
-                sentencia_segunda.setInt(1, id_usuario);
-                ResultSet resultado_segundo = sentencia_segunda.executeQuery();
-                resultado_segundo.absolute(1);
-                int nivel_ajedrez = resultado_segundo.getInt("nivel_ajedrez");
-                String nombreUsuario = resultado_segundo.getString("nombre_usuario");
+
+            while (resultado.next()) {    //las propiedades con las que se crea un perfil son el id del usuario (nombre y nivel ajedrez) junto al rating, puzzles resueltos e intentados s
+
+                int id_usuario = resultado.getInt("p.id_usuario");
+                int nivel_ajedrez = resultado.getInt("u.nivel_ajedrez");
+                String nombreUsuario = resultado.getString("u.nombre_usuario");
+                int id_rating = resultado.getInt("p.id_rating");
+                int rating = resultado.getInt("r.valor");
+                Stack<Partida> puzzlesIntentados = puzzlesIntentados(con, id_usuario);
+                Stack<Partida> puzzlesResueltos = puzzlesResueltos(con, id_usuario);   //-----------------Consultar puzzles resueltos asociados-------------------------------
+
                 //a cada perfil, traer todos los puzzles que ha resuelto y los intentos , para intentos almazena en estructura tipo partida
                 //para puzzle una estructura tipo puzzle
-                
-                int id_rating = resultado.getInt("id_rating");
-                String query_segundo = "SELECT valor FROM  rating WHERE id = ? ";
-                PreparedStatement sentencia_tercera = con.prepareStatement(query_segundo, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
-                sentencia_tercera.setInt(1, id_rating);
-                ResultSet resultado_tercero = sentencia_tercera.executeQuery();
-                resultado_tercero.absolute(1);
-                int rating = resultado_tercero.getInt("valor");
-                //-----------------Consultar puzzles resueltos asociados-------------------------------
-                Stack<Puzzle> puzzlesResueltos = new Stack<Puzzle>();
-                String consultarResueltos = " SELECT id_puzzle FROM perfil_puzzles_resueltos WHERE id_perfil = ? ORDER BY fecha_intento DESC;";
-                PreparedStatement sentencia_cuarta = con.prepareStatement(consultarResueltos);
-                sentencia_cuarta.setInt(1, id_usuario);
-                ResultSet resultadoResueltos = sentencia_cuarta.executeQuery();
-                while (resultadoResueltos.next()) {
-                    Puzzle puzzle = new Puzzle(resultadoResueltos.getInt("id_puzzle"));
-                    puzzlesResueltos.add(puzzle);
-
-                }
-                  //-----------------Consultar puzzles intentados con fecha asociados---------------------------------------
-                Stack<Partida> puzzlesIntentados = new Stack<Partida>();
-                String consultarIntentados = " SELECT id_puzzle,fecha_intento FROM perfil_puzzles_intentados WHERE id_perfil = ? ORDER BY fecha_intento DESC;";
-                PreparedStatement sentencia_quinta = con.prepareStatement(consultarIntentados);
-                sentencia_quinta.setInt(1, id_usuario);
-                ResultSet resultadoIntentados = sentencia_quinta.executeQuery();
-                while (resultadoIntentados.next()) {
-                    int idPuzzle = resultadoIntentados.getInt("id_puzzle");
-                    Date fecha = resultadoIntentados.getDate("fecha_intento");
-                    Partida partida = new Partida(idPuzzle,id_usuario, fecha);
-                    puzzlesIntentados.add(partida);
-
-                }
-
                 Perfil perfil = new Perfil(id_usuario, nombreUsuario, nivel_ajedrez, rating, puzzlesResueltos, puzzlesIntentados, id_rating);
                 perfiles.add(perfil);
 
@@ -95,55 +65,25 @@ public class PerfilRepository {
         Perfil perfil = null;
         try {
             Connection con = BaseDeDatos.getConnection();
-            String sql = "SELECT  id_usuario, id_rating FROM perfil WHERE id_usuario = ? ";
+            String sql = "SELECT p.id_usuario, u.nombre_usuario, u.nivel_ajedrez, r.valor, p.id_rating"
+                    + " FROM perfil p,usuario u, rating r "
+                    + "WHERE p.id_usuario = ? AND  p.id_usuario = u.id AND p.id_rating = r.id ";
             PreparedStatement sentencia = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
             sentencia.setInt(1, perfilConsultar.getId());
             ResultSet resultado = sentencia.executeQuery();
             resultado.absolute(1);
+            int id_usuario = resultado.getInt("p.id_usuario");
+            int nivel_ajedrez = resultado.getInt("u.nivel_ajedrez");
+            String nombreUsuario = resultado.getString("u.nombre_usuario");
+            int id_rating = resultado.getInt("p.id_rating");
+            int rating = resultado.getInt("r.valor");
 
-            int id_usuario = resultado.getInt("id_usuario");       //obtener nombre y nivel desde el id de la llave foranea
-            String query = "SELECT nombre_usuario,nivel_ajedrez FROM  usuario WHERE id = ? ";
-            PreparedStatement sentencia_segunda = con.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
-            sentencia_segunda.setInt(1, id_usuario);
-            ResultSet resultado_segundo = sentencia_segunda.executeQuery();
-            resultado_segundo.absolute(1);
-            int nivel_ajedrez = resultado_segundo.getInt("nivel_ajedrez");
-            String nombreUsuario = resultado_segundo.getString("nombre_usuario");
+            //-----------------Consultar puzzles resueltos asociados-------------------------------
+            //-----------------Consultar puzzles intentados con fecha asociados---------------------------------------
+            Stack<Partida> puzzlesIntentados = puzzlesIntentados(con,id_usuario); 
+             Stack<Partida> puzzlesResueltos = puzzlesResueltos(con,id_usuario); 
+           
 
-            int id_rating = resultado.getInt("id_rating");
-            String query_segundo = "SELECT valor FROM  rating WHERE id = ? ";
-            PreparedStatement sentencia_tercera = con.prepareStatement(query_segundo, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
-            sentencia_tercera.setInt(1, id_rating);
-            ResultSet resultado_tercero = sentencia_tercera.executeQuery();
-            resultado_tercero.absolute(1);
-            int rating = resultado_tercero.getInt("valor");
-            
-              //-----------------Consultar puzzles resueltos asociados-------------------------------
-                Stack<Puzzle> puzzlesResueltos = new Stack<Puzzle>();
-                String consultarResueltos = " SELECT id_puzzle FROM perfil_puzzles_resueltos WHERE id_perfil = ? ORDER BY fecha_intento DESC;";
-                PreparedStatement sentencia_cuarta = con.prepareStatement(consultarResueltos);
-                sentencia_cuarta.setInt(1, id_usuario);
-                ResultSet resultadoResueltos = sentencia_cuarta.executeQuery();
-                while (resultadoResueltos.next()) {
-                    Puzzle puzzle = new Puzzle(resultadoResueltos.getInt("id_puzzle"));
-                    puzzlesResueltos.add(puzzle);
-
-                }
-                  //-----------------Consultar puzzles intentados con fecha asociados---------------------------------------
-                Stack<Partida> puzzlesIntentados = new Stack<Partida>();
-                String consultarIntentados = " SELECT id_puzzle,fecha_intento FROM perfil_puzzles_intentados WHERE id_perfil = ? ORDER BY fecha_intento DESC;";
-                PreparedStatement sentencia_quinta = con.prepareStatement(consultarIntentados);
-                sentencia_quinta.setInt(1, id_usuario);
-                ResultSet resultadoIntentados = sentencia_quinta.executeQuery();
-                while (resultadoIntentados.next()) {
-                    int idPuzzle = resultadoIntentados.getInt("id_puzzle");
-                    Date fecha = resultadoIntentados.getDate("fecha_intento");
-                    Partida partida = new Partida(idPuzzle,id_usuario, fecha);
-                    puzzlesIntentados.add(partida);
-
-                }
-
-            
             perfil = new Perfil(id_usuario, nombreUsuario, nivel_ajedrez, rating, puzzlesResueltos, puzzlesIntentados, id_rating);
 
         } catch (SQLException ex) {
@@ -207,6 +147,53 @@ public class PerfilRepository {
         }
 
         return actualizado;
+
+    }
+
+    public Stack<Partida> puzzlesIntentados(Connection con, int id_usuario) {
+        Stack<Partida> puzzlesIntentados = new Stack<Partida>();
+        try {
+
+            String consultarIntentados = " SELECT id_puzzle,fecha_intento, tiempo_intento FROM perfil_puzzles_intentados WHERE id_perfil = ? ORDER BY fecha_intento DESC;";
+            PreparedStatement sentencia_quinta = con.prepareStatement(consultarIntentados);
+            sentencia_quinta.setInt(1, id_usuario);
+            ResultSet resultadoIntentados = sentencia_quinta.executeQuery();
+            while (resultadoIntentados.next()) {
+                int idPuzzle = resultadoIntentados.getInt("id_puzzle");
+                Date fecha = resultadoIntentados.getDate("fecha_intento");
+               LocalTime tiempoIntento = resultadoIntentados.getTime("tiempo_intento").toLocalTime();
+                Partida partida = new Partida(idPuzzle, id_usuario, fecha,tiempoIntento,false);
+               
+                puzzlesIntentados.add(partida);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PerfilRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return puzzlesIntentados;
+    }
+
+    public Stack<Partida> puzzlesResueltos(Connection con, int id_usuario) {
+        Stack<Partida> puzzlesResueltos = new Stack<Partida>();
+        try {
+
+            String consultarResueltos = " SELECT id_puzzle,fecha_intento, tiempo_intento FROM perfil_puzzles_resueltos WHERE id_perfil = ? ORDER BY fecha_intento DESC;";
+            PreparedStatement sentencia = con.prepareStatement(consultarResueltos);
+            sentencia.setInt(1, id_usuario);
+            ResultSet resultadoResueltos = sentencia.executeQuery();
+            while (resultadoResueltos.next()) {
+                 int idPuzzle = resultadoResueltos.getInt("id_puzzle");
+                Date fecha = resultadoResueltos.getDate("fecha_intento");
+                LocalTime tiempoIntento = resultadoResueltos.getTime("tiempo_intento").toLocalTime();
+                Partida partida = new Partida(idPuzzle, id_usuario, fecha,tiempoIntento,true);
+                puzzlesResueltos.add(partida);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PerfilRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return puzzlesResueltos;
 
     }
 

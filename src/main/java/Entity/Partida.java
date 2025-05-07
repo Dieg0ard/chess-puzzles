@@ -24,6 +24,15 @@ public class Partida {
         this.perfilId = perfilId;
     }
 
+    public Partida(int puzzleId, int perfilId, Date fechaIntento, LocalTime tiempoIntento,boolean puzzleResuelto) {
+        this.puzzleId = puzzleId;
+        this.perfilId = perfilId;
+        this.fechaIntento = fechaIntento;
+        this.tiempoIntento = tiempoIntento;
+        this.puzzleResuelto =puzzleResuelto;
+    }
+    
+
     public Partida(int puzzleId, int perfilId, boolean puzzleResuelto, Date fechaIntento, LocalTime tiempointento) {
         this.puzzleId = puzzleId;
         this.perfilId = perfilId;
@@ -37,6 +46,20 @@ public class Partida {
         this.perfilId = perfilId;
         this.fechaIntento = fechaIntento;
     }
+
+    public Partida(int puzzleId, Date fechaIntento) {
+        this.puzzleId = puzzleId;
+        this.fechaIntento = fechaIntento;
+    }
+
+    public Partida(int puzzleId, int perfilId, boolean puzzleResuelto, Date fechaIntento) {
+        this.puzzleId = puzzleId;
+        this.perfilId = perfilId;
+        this.puzzleResuelto = puzzleResuelto;
+        this.fechaIntento = fechaIntento;
+    }
+    
+    
     
     
     

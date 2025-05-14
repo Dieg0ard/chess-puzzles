@@ -23,11 +23,14 @@ public class UsuarioRepository {
 
     public List<Usuario> consultar() {
         List<Usuario> usuarios = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement sentencia = null;
+        ResultSet resultado = null;
         try {
-            Connection con = BaseDeDatos.getConnection();
+            con = BaseDeDatos.getConnection();
             String sql = "SELECT id, nombre_usuario,nombre_real,correo,clave,nivel_ajedrez FROM  usuario ";
-            PreparedStatement sentencia = con.prepareStatement(sql);
-            ResultSet resultado = sentencia.executeQuery();
+            sentencia = con.prepareStatement(sql);
+            resultado = sentencia.executeQuery();
             while (resultado.next()) {
                 int id = resultado.getInt("id");
                 String nombreUsuario = resultado.getString("nombre_usuario");
@@ -43,18 +46,30 @@ public class UsuarioRepository {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                BaseDeDatos.close(resultado);
+                BaseDeDatos.close(sentencia);
+                BaseDeDatos.close(con);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         return usuarios;
     }
 
     public Usuario consultarId(Usuario usuarioConsultar) {
         Usuario usuario = null;
+        Connection con = null;
+        PreparedStatement sentencia = null;
+        ResultSet resultado = null;
         try {
-            Connection con = BaseDeDatos.getConnection();
+            con = BaseDeDatos.getConnection();
             String sql = "SELECT  id, nombre_usuario,nombre_real,correo,clave,nivel_ajedrez FROM usuario WHERE id = ? ";
-            PreparedStatement sentencia = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
+            sentencia = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.TYPE_FORWARD_ONLY);
             sentencia.setInt(1, usuarioConsultar.getId());
-            ResultSet resultado = sentencia.executeQuery();
+            resultado = sentencia.executeQuery();
             resultado.absolute(1);
             int id = resultado.getInt("id");
             String nombreUsuario = resultado.getString("nombre_usuario");
@@ -68,6 +83,15 @@ public class UsuarioRepository {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                BaseDeDatos.close(resultado);
+                BaseDeDatos.close(sentencia);
+                BaseDeDatos.close(con);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         return usuario;
 
@@ -75,10 +99,12 @@ public class UsuarioRepository {
 
     public int insertar(Usuario usuarioInsertar) {
         int registro = 0;
+        Connection con = null;
+        PreparedStatement sentencia = null;
         try {
-            Connection con = BaseDeDatos.getConnection();
+            con = BaseDeDatos.getConnection();
             String sql = "INSERT INTO usuario VALUES(?,?,?,?,?,null)";
-            PreparedStatement sentencia = con.prepareStatement(sql);
+            sentencia = con.prepareStatement(sql);
             sentencia.setString(1, usuarioInsertar.getNombreUsuario());
             sentencia.setString(2, usuarioInsertar.getNombreReal());
             sentencia.setString(3, usuarioInsertar.getCorreo());
@@ -90,6 +116,14 @@ public class UsuarioRepository {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                BaseDeDatos.close(sentencia);
+                BaseDeDatos.close(con);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         return registro;
 
@@ -97,10 +131,12 @@ public class UsuarioRepository {
 
     public int eliminar(Usuario usuario) {
         int eliminado = 0;
+        Connection con = null;
+        PreparedStatement sentencia = null;
         try {
-            Connection con = BaseDeDatos.getConnection();
+            con = BaseDeDatos.getConnection();
             String sql = "DELETE FROM usuario WHERE id = ?";
-            PreparedStatement sentencia = con.prepareStatement(sql);
+            sentencia = con.prepareStatement(sql);
             sentencia.setInt(1, usuario.getId());
             eliminado = sentencia.executeUpdate();
         } catch (SQLException ex) {
@@ -108,15 +144,26 @@ public class UsuarioRepository {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
+        finally{
+            try {
+                BaseDeDatos.close(sentencia);
+                 BaseDeDatos.close(con);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        }
         return eliminado;
     }
 
     public int actualizar(Usuario usuario) {
         int actualizado = 0;
+         Connection con = null;  
+         PreparedStatement sentencia = null;
         try {
-            Connection con = BaseDeDatos.getConnection();
+            con = BaseDeDatos.getConnection();
             String sql = "UPDATE usuario SET  nombre_usuario= ?  WHERE id = ?";
-            PreparedStatement sentencia = con.prepareStatement(sql);
+            sentencia = con.prepareStatement(sql);
             sentencia.setString(1, usuario.getNombreUsuario());
             sentencia.setInt(2, usuario.getId());
             actualizado = sentencia.executeUpdate();
@@ -125,6 +172,15 @@ public class UsuarioRepository {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+            try {
+                BaseDeDatos.close(sentencia);
+                BaseDeDatos.close(con);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
 
         return actualizado;

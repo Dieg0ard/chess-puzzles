@@ -25,8 +25,9 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class PerfilRepository {
+public class PerfilRepository implements IPerfilRepository {
 
+    @Override
     public List<Perfil> consultar() {
         List<Perfil> perfiles = new ArrayList<>();
         Connection con = null;
@@ -73,6 +74,7 @@ public class PerfilRepository {
         return perfiles;
     }
 
+    @Override
     public Perfil consultarId(Perfil perfilConsultar) {
         Perfil perfil = null;
         Connection con = null;
@@ -118,6 +120,7 @@ public class PerfilRepository {
 
     }
 
+    @Override
     public int insertar(Perfil perfilInsertar) {    //solo se incertan perfiles con sus caracteristicas iniciales, no tenf=dran partidads ganadas al inicio
         int registro = 0;                                            //se incerta con el id de algun usuario existente que no tenga perfil, o, se insertará al momento del registro de usuario mejor, junto al id de un rating existente
         Connection con = null;
@@ -147,6 +150,7 @@ public class PerfilRepository {
 
     }
 
+    @Override
     public int eliminar(Perfil perfil) {
         int eliminado = 0;
         Connection con = null;
@@ -174,6 +178,7 @@ public class PerfilRepository {
         return eliminado;
     }
 
+    @Override
     public int actualizar(Perfil perfil) {
         int actualizado = 0;
         Connection con = null;

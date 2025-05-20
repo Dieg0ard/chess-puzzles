@@ -14,7 +14,7 @@ import java.util.List;
 public interface IUsuarioRepository {
     
     public List<Usuario> consultar();
-    public Usuario consultarCodigo(Usuario usuario);
+    public Usuario consultarId(Usuario usuario);
     public int insertar(Usuario usuario);
     public int eliminar(Usuario usuario);
     public int actualizar(Usuario usuario);

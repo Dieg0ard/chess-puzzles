@@ -19,8 +19,9 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class UsuarioRepository {
+public class UsuarioRepository implements IUsuarioRepository {
 
+    @Override
     public List<Usuario> consultar() {
         List<Usuario> usuarios = new ArrayList<>();
         Connection con = null;
@@ -59,6 +60,7 @@ public class UsuarioRepository {
         return usuarios;
     }
 
+    @Override
     public Usuario consultarId(Usuario usuarioConsultar) {
         Usuario usuario = null;
         Connection con = null;
@@ -96,7 +98,7 @@ public class UsuarioRepository {
         return usuario;
 
     }
-
+    @Override
     public int insertar(Usuario usuarioInsertar) {
         int registro = 0;
         Connection con = null;
@@ -129,6 +131,7 @@ public class UsuarioRepository {
 
     }
 
+    @Override
     public int eliminar(Usuario usuario) {
         int eliminado = 0;
         Connection con = null;
@@ -156,6 +159,7 @@ public class UsuarioRepository {
         return eliminado;
     }
 
+    @Override
     public int actualizar(Usuario usuario) {
         int actualizado = 0;
          Connection con = null;  
@@ -186,5 +190,7 @@ public class UsuarioRepository {
         return actualizado;
 
     }
+
+    
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public interface IRatingRepository {
     
      public List<Rating> consultar();
-    public Rating consultarCodigo(Rating rating);
+    public Rating consultarId(Rating rating);
     public int insertar(Rating rating);
     public int eliminar(Rating rating);
     public int actualizar(Rating rating);

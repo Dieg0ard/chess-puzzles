@@ -14,7 +14,7 @@ import java.util.List;
 public interface IPerfilRepository {
     
     public List<Perfil> consultar();
-    public Perfil consultarCodigo(Perfil perfil);
+    public Perfil consultarId(Perfil perfil);
     public int insertar(Perfil perfil);
     public int eliminar(Perfil perfil);
     public int actualizar(Perfil perfil);

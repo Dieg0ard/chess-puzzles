@@ -19,8 +19,9 @@ import java.util.logging.Logger;
  *
  * @author Usuario
  */
-public class RatingRepository {
+public class RatingRepository implements IRatingRepository{
 
+    @Override
     public List<Rating> consultar() {
         List<Rating> ratings = new ArrayList<>();
         Connection con = null;
@@ -56,6 +57,7 @@ public class RatingRepository {
         return ratings;
     }
 
+    @Override
     public Rating consultarId(Rating ratingConsultar) {
         Rating rating = null;
         Connection con = null;
@@ -92,6 +94,7 @@ public class RatingRepository {
 
     }
 
+    @Override
     public int insertar(Rating ratingInsertar) {
         int registro = 0;
         Connection con = null;
@@ -121,6 +124,7 @@ public class RatingRepository {
 
     }
 
+    @Override
     public int eliminar(Rating rating) {
         int eliminado = 0;
         Connection con = null;
@@ -149,6 +153,7 @@ public class RatingRepository {
         return eliminado;
     }
 
+    @Override
     public int actualizar(Rating rating) {
         int actualizado = 0;
         Connection con = null;
